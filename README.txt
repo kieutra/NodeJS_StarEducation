@@ -9,5 +9,6 @@ To run this project:
 	- Go to src/resources/scss/_variables.scss 
 	- Then Ctrl + S for saving it. File .CSS will be created and run.
 4. Refresh the browser.
+5. This version needs MongoDB library
 
 DONE!
