@@ -1,0 +1,34 @@
+//home
+.card-course-item{
+  margin-bottom: 32px;
+}
+
+.card-body a{
+  text-decoration: none;
+
+}
+.user-avatar{
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
+// me/stored/courses
+.trash-new-courses{
+  width: 30%;;
+  margin-top: 32px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.trash-courses a, 
+.new-course a{
+  color: white;
+  text-decoration: none;
+}
+
+.checkbox-select-all-options{
+  width: 150px;
+  margin: 0 16px;
+}

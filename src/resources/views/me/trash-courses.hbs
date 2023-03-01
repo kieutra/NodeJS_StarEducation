@@ -1,0 +1,176 @@
+<form class="mt-4" name="container-form" method="POST" action="/courses/handle-form-actions">
+  <div>
+    <h3>Deleted courses</h3>
+    <a class="btn btn-secondary" style="margin-top: 24px" href="/me/stored/courses">Go back to My courses</a>
+
+    <div class="mt-4 d-flex align-items-center">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="check-all">
+        <label class="form-check-label" for="check-all">
+          Select all
+        </label>
+      </div>
+
+      <select class="form-select form-select-sm checkbox-select-all-options" name="actions" required>
+        <option value="">--Select actions--</option>
+        <option value="restore">Restore</option>
+      </select>
+
+      <button class="btn btn-primary btn-sm btn-submit" disabled>Submit</button>
+    </div>
+
+
+    <table class="table mt-4">
+      <thead>
+        <tr>
+          <th scope="col">Check</th>
+          <th scope="col">#</th>
+          <th scope="col">Course name</th>
+          <th scope="col">Level</th>
+          <th scope="col" colspan='2'>Deleted Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each courses}}
+        <tr>
+          <td>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="courseIds[]" value="{{this._id}}">
+            </div>
+          </td>
+
+          <th scope="row">{{this.-id}}</th>
+          <td>{{this.name}}</td>
+          <td>{{this.level}}</td>
+          <td>{{this.deletedAt}}</td>
+
+          <td>
+            <a href="" class="btn btn-success btn-restore" data-id="{{this._id}}">Restore</a>
+            <a class=" btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-course-modal"
+              data-id="{{this._id}}">Delete</a>
+          </td>
+        </tr>
+        {{!-- Neu array khong co du lieu thi vao else --}}
+        {{else}}
+        <tr>
+          <td colspan="5" class="text-center">The trash is empty!
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</form>
+{{!--confirm permanent delete course--}}
+
+<!-- Modal -->
+<div id="delete-course-modal" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Permanent delete</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        This action cannot be restored! Are you sure to continue?
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-delete-course" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<form method="POST" name="delete-course-form"></form>
+<form method="POST" name="restore-course-form"></form>
+
+<script>
+
+  //permanent or force delete
+  var courseId;
+  var deleteForm = document.forms['delete-course-form'];
+  const btnDeleteCourse = document.getElementById('btn-delete-course');
+  const deleteCourseModal = document.getElementById('delete-course-modal');
+
+  deleteCourseModal.addEventListener('show.bs.modal', function (event) {
+    const button = event.relatedTarget;
+    courseId = button.getAttribute('data-id');
+  });
+
+  btnDeleteCourse.onclick = function () {
+    deleteForm.action = '/courses/' + courseId + '/force?_method=DELETE';
+    deleteForm.submit();
+  }
+
+
+
+
+  //restore btn 
+  var restoreBtns = document.querySelectorAll('.btn-restore');
+  var restoreForm = document.forms['restore-course-form'];
+
+  for (const restoreBtn of restoreBtns) {
+    restoreBtn.onclick = (e) => {
+      e.preventDefault();
+      courseId = e.target.getAttribute('data-id');
+      restoreForm.action = '/courses/' + courseId + '/restore?_method=PATCH';
+      restoreForm.submit();
+    }
+  }
+
+
+  //Checkbox
+  var checkboxAll = document.getElementById('check-all');
+  var checkboxEachArray = document.querySelectorAll('input[name="courseIds[]"]');
+  //checkboxAll change 
+  checkboxAll.onchange = (e) => {
+    e.preventDefault();
+    const isCheckedAll = checkboxAll.checked ? true : false;
+    for (const checkboxEach of checkboxEachArray) {
+      checkboxEach.checked = isCheckedAll;
+    }
+    enableSubmitBtn();
+  }
+
+
+
+
+  //checkboxEach change
+
+  for (const checkboxEach of checkboxEachArray) {
+    checkboxEach.onchange = () => {
+      var isCheckedBoxAll = checkboxEachArray.length === document.querySelectorAll('input[name="courseIds[]"]:checked').length;
+      checkboxAll.checked = isCheckedBoxAll;
+      //Enable submit button
+      enableSubmitBtn();
+    }
+  }
+
+  //Enable submit button function
+  var checkAllSubmit = document.querySelector('.btn-submit');
+  function enableSubmitBtn() {
+    var checkedCount = document.querySelectorAll('input[name="courseIds[]"]:checked').length;
+    if (checkedCount > 0)
+      checkAllSubmit.disabled = false;
+    else
+      checkAllSubmit.disabled = true;
+  }
+
+  //Submit button clicked
+  var containerForm = document.forms['container-form'];
+
+  containerForm.addEventListener('submit', (e) => { //form lắng nghe sự kiện chứ không phải submitBtn
+    var isSubmittable = !checkAllSubmit.classList.contains('disabled');
+    if (!isSubmittable) {
+      e.preventDefault();
+    }
+  })
+
+
+
+
+
+</script>

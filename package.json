@@ -1,0 +1,52 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "first nodejs project",
+  "main": "src/index.js",
+  "scripts": {
+    "beautiful": "lint-staged",
+    "start": "nodemon --inspect src/index.js",
+    "watch": "node-sass --watch src/resources/scss -o src/public/css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kieutra/NodeJS_blog.git"
+  },
+  "keywords": [
+    "nodejs",
+    "blog",
+    "first",
+    "project",
+    "nodejs"
+  ],
+  "author": "TraKieu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kieutra/NodeJS_blog/issues"
+  },
+  "homepage": "https://github.com/kieutra/NodeJS_blog#readme",
+  "lint-staged": {
+    "src/**/*.{js,json,scss}": "prettier --single-quote --trailing-comma all --tab-width 4 --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.7",
+    "method-override": "^3.0.0",
+    "mongoose": "^6.10.0",
+    "mongoose-delete": "^0.5.4",
+    "mongoose-slug-generator": "^1.0.4"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.2",
+    "node-sass": "^8.0.0",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.8.4"
+  }
+}
