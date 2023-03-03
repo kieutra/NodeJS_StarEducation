@@ -9,6 +9,5 @@ To run this project:
 	- Go to src/resources/scss/_variables.scss 
 	- Then Ctrl + S for saving it. File .CSS will be created and run.
 4. Refresh the browser.
-Attention: This project needs NodeJS, Express, MongoDB, HandleBars, Mongoose
 
 DONE!
