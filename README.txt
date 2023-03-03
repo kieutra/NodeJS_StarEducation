@@ -1,9 +1,9 @@
 To run this project: 
 
-1. Install express
-	- npm i express
+1. Install dependencies
+	- npm install
 
-2. To create and run file .CSS: 
+2. Create and run file .CSS: 
 
  	- npm run watch
 	- Go to src/resources/scss/_variables.scss 
